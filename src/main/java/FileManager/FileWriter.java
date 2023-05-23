@@ -3,15 +3,19 @@ package FileManager;
 import Records.FileRecords.FileDataEntry;
 import Records.FileRecords.FileWriterResponse;
 import Records.FileRecords.HintFileRecord;
-import SystemConfigs.Variables;
+import SystemConfigs.EnvironmentVariables;
 
 import java.io.*;
 
 public class FileWriter {
     public File activeFile;
+    private final long maxFileSize;
+    private EnvironmentVariables environmentVariables;
     private final String workingDirectory;
     public FileWriter(String workingDirectory) throws IOException {
         this.workingDirectory = workingDirectory;
+        EnvironmentVariables environmentVariables = EnvironmentVariables.getEnvironmentVariablesInstance();
+        maxFileSize = environmentVariables.MAX_FILE_SIZE;
         setActiveFile();
         activeFile.createNewFile();
     }
@@ -36,7 +40,7 @@ public class FileWriter {
         return writeDataRecord(data,activeFile);
     }
     private void setActiveFile() throws IOException {
-        if (activeFile==null || activeFile.length()>=Variables.MAX_FILE_SIZE)
+        if (activeFile==null || activeFile.length()>= maxFileSize)
             activeFile = new File(workingDirectory + "/" + System.currentTimeMillis() + ".data");
     }
 

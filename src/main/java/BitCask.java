@@ -5,24 +5,43 @@ import Records.FileRecords.FileDataEntry;
 import Records.FileRecords.FileWriterResponse;
 import Records.FileRecords.HintFileRecord;
 import Records.MapRecords.KeyValueMetaData;
-import SystemConfigs.Variables;
+import SystemConfigs.EnvironmentVariables;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class BitCask {
     private final FileWriter fileWriter;
     private final FileReader fileReader;
     private HashMap<String, KeyValueMetaData> keyDirectory;
     private final HashMap<String,String> cache;
+    private final String workingDirectory;
+    private final long mergeInterval;
     public BitCask() throws Exception {
-        FileManager.createDirectory(Variables.FILES_DIRECTORY);
+        EnvironmentVariables environmentVariables = EnvironmentVariables.getEnvironmentVariablesInstance();
+        workingDirectory = environmentVariables.FILES_DIRECTORY;
+        mergeInterval = environmentVariables.MERGE_INTERVAL;
+        FileManager.createDirectory(workingDirectory);
         keyDirectory = new HashMap<>();
         fileReader = new FileReader();
         cache = new HashMap<>();
         build();
-        fileWriter = new FileWriter(Variables.FILES_DIRECTORY);
+        fileWriter = new FileWriter(workingDirectory);
+        scheduleMergeOperation(mergeInterval);
+    }
+    private void scheduleMergeOperation(long mergeInterval){
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            try {
+                this.merge();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, mergeInterval, mergeInterval, TimeUnit.SECONDS);
     }
     private String get(String key, HashMap<String, KeyValueMetaData> keyDirectoryMap) throws Exception {
         if (!keyDirectoryMap.containsKey(key)){
@@ -47,10 +66,10 @@ public class BitCask {
                 response.filePath(), response.valuePosition(), data.valueSize(), data.timeStamp());
         keyDirectory.put(key,metaData);
     }
-    public void build() throws Exception {
+    private void build() throws Exception {
         recoverFromFailure();
         keyDirectory.clear();
-        File directory = new File(Variables.FILES_DIRECTORY);
+        File directory = new File(workingDirectory);
         File[] files = FileManager.sortFilesByTime(directory.listFiles(),false);
         assert files != null;
         processFiles(Arrays.stream(files).toList(),keyDirectory);
@@ -70,7 +89,7 @@ public class BitCask {
         }
     }
     private void recoverFromFailure() throws Exception {
-        File directory = new File(Variables.FILES_DIRECTORY);
+        File directory = new File(workingDirectory);
         File[] files = directory.listFiles();
         assert files != null;
         List<File> corruptedFiles = Arrays.stream(files).filter(file -> file.getName().endsWith("#")).toList();
@@ -80,7 +99,7 @@ public class BitCask {
         }
     }
     public void merge() throws Exception {
-        File directory = new File(Variables.FILES_DIRECTORY);
+        File directory = new File(workingDirectory);
         File[] files = FileManager.sortFilesByTime(directory.listFiles(),false);
         List<File> filesToMerge = Arrays.stream(files).filter(file->!file.getPath().equals(fileWriter.activeFile.getPath())).toList();
         if (filesToMerge==null || filesToMerge.size()<2)return;
@@ -131,12 +150,18 @@ public class BitCask {
 
     public static void main(String[] args) throws Exception {
         BitCask bitCask = new BitCask();
+//        Random random = new Random();
+//        while(true){
+//            bitCask.put("randomgiberish",""+random.nextInt(1234516));
+//            Thread.sleep(100);
+//            System.out.println(bitCask.get("randomgiberish"));
+//        }
 //        bitCask.put("hamada","1");
 //        bitCask.put("h","2");
 //        bitCask.put("test","3");
 //        bitCask.put("ttt","4");
 //        bitCask.put("new","5");
-//        bitCask.merge();
+
         System.out.println(bitCask.get("hamada"));
         System.out.println(bitCask.get("h"));
         System.out.println(bitCask.get("test"));

@@ -14,7 +14,7 @@ public class HintFileRecord{
         this.valuePosition = valuePosition;
         this.key = key;
     }
-    public byte[] getBytes() throws IOException {
+    public byte[] getBytes() {
         int recordSize = Long.BYTES + Integer.BYTES * 3 + keySize;
         ByteBuffer byteBuffer = ByteBuffer.allocate(recordSize);
         byteBuffer.putLong(timeStamp).putInt(keySize).putInt(valueSize).putInt(valuePosition).put(key.getBytes());

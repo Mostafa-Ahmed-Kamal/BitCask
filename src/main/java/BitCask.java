@@ -20,11 +20,11 @@ public class BitCask {
     private HashMap<String, KeyValueMetaData> keyDirectory;
     private final HashMap<String,String> cache;
     private final String workingDirectory;
-    private final long mergeInterval;
+
     public BitCask() throws Exception {
         EnvironmentVariables environmentVariables = EnvironmentVariables.getEnvironmentVariablesInstance();
         workingDirectory = environmentVariables.FILES_DIRECTORY;
-        mergeInterval = environmentVariables.MERGE_INTERVAL;
+        long mergeInterval = environmentVariables.MERGE_INTERVAL;
         FileManager.createDirectory(workingDirectory);
         keyDirectory = new HashMap<>();
         fileReader = new FileReader();

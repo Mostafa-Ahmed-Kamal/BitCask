@@ -14,7 +14,7 @@ public class FileDataEntry{
         this.key = key;
         this.value = value;
     }
-    public byte[] getBytes() throws IOException {
+    public byte[] getBytes() {
         int recordSize = Long.BYTES + Integer.BYTES * 2 + keySize + valueSize;
         ByteBuffer byteBuffer = ByteBuffer.allocate(recordSize);
         byteBuffer.putLong(timeStamp).putInt(keySize).putInt(valueSize).put(key.getBytes()).put(value.getBytes());

@@ -129,7 +129,7 @@ public class BitCask {
                     value.getBytes().length, //valueSize
                     response.valuePosition(),
                     entry.getKey()
-            );
+                    );
             fileWriter.writeHintRecord(hintRecord,hintFile);
         }
         File mergeFileRename = new File(mergeFile.getPath().replace("#",""));
@@ -150,7 +150,7 @@ public class BitCask {
 
 //    public static void main(String[] args) throws Exception {
 //        BitCask bitCask = new BitCask();
-////        Random random = new Random();
+//        Random random = new Random();
 ////        while(true){
 ////            bitCask.put("randomgiberish",""+random.nextInt(1234516));
 ////            Thread.sleep(100);
@@ -161,7 +161,7 @@ public class BitCask {
 ////        bitCask.put("test","3");
 ////        bitCask.put("ttt","4");
 ////        bitCask.put("new","5");
-//
+//        bitCask.merge();
 //        System.out.println(bitCask.get("hamada"));
 //        System.out.println(bitCask.get("h"));
 //        System.out.println(bitCask.get("test"));

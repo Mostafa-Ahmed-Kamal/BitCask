@@ -13,5 +13,5 @@ public class EnvironmentVariables {
     }
     public final long MAX_FILE_SIZE = 10000; //bytes
     public final String FILES_DIRECTORY = "DBFiles";
-    public final long MERGE_INTERVAL = 100; // seconds
+    public final long MERGE_INTERVAL = 1000; // seconds
 }

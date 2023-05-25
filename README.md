@@ -10,5 +10,7 @@ Bitcask is a log-structured key-value storage system designed for high-performan
 ### Note: 
 compaction and checksum are not yet implemented. 
 # Resources:
-https://docs.riak.com/riak/kv/2.2.3/setup/planning/backend/bitcask/index.html
+https://docs.riak.com/riak/kv/2.2.3/setup/planning/backend/bitcask/index.html 
+
+
 https://riak.com/assets/bitcask-intro.pdf

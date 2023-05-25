@@ -7,7 +7,7 @@ Bitcask is a log-structured key-value storage system designed for high-performan
 -public delete(String key) -> void: Remove a key-value pair ❌
 -private compaction() -> void: a scheduled operation that merges and compacts log files to create new log files with smaller size. ✅
 
-## Note: 
+### Note: 
 compaction and checksum are not yet implemented. 
 # Resources:
 https://docs.riak.com/riak/kv/2.2.3/setup/planning/backend/bitcask/index.html

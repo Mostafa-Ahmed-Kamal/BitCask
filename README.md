@@ -5,7 +5,7 @@ Bitcask is a log-structured key-value storage system designed for high-performan
 - public put(String key, String value) -> void: store a key-value pair ✅
 - public get(String key) -> String value: Retrieves the value associated with a given key. ✅
 - public delete(String key) -> void: Remove a key-value pair ❌
-- private compaction() -> void: a scheduled operation that merges and compacts log files to create new log files with smaller size. ✅
+- private compaction() -> void: a scheduled operation that merges and compacts log files to create new log files with smaller size and generates hint files to help with rebuilding after system restart/failure. ✅
 
 ### Note: 
 delete operation and checksum are not yet implemented. 

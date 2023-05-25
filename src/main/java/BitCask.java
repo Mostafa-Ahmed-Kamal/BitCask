@@ -147,25 +147,4 @@ public class BitCask {
             file.delete();
         }
     }
-
-//    public static void main(String[] args) throws Exception {
-//        BitCask bitCask = new BitCask();
-//        Random random = new Random();
-////        while(true){
-////            bitCask.put("randomgiberish",""+random.nextInt(1234516));
-////            Thread.sleep(100);
-////            System.out.println(bitCask.get("randomgiberish"));
-////        }
-////        bitCask.put("hamada","1");
-////        bitCask.put("h","2");
-////        bitCask.put("test","3");
-////        bitCask.put("ttt","4");
-////        bitCask.put("new","5");
-//        bitCask.merge();
-//        System.out.println(bitCask.get("hamada"));
-//        System.out.println(bitCask.get("h"));
-//        System.out.println(bitCask.get("test"));
-//        System.out.println(bitCask.get("ttt"));
-//        System.out.println(bitCask.get("new"));
-//    }
 }
